@@ -17,7 +17,8 @@ jobs:
   - name: Commit and push changes
     uses: arcezd/github-app-commit-action@v1
     env:
-      GITHUB_APP_PRIVATE_KEY: ${{ secrets.GITHUB_APP_PRIVATE_KEY }}
+      GH_APP_PRIVATE_KEY: ${{ secrets.GH_APP_PRIVATE_KEY }}
     with:
       repository: ${{ github.repository }}
       branch: "test-push"
+      force-push: true
