@@ -7,18 +7,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-  steps:
-  - name: Checkout
-    uses: actions/checkout@v4
-  - name: Write random text to file
-    run: |
-      RANDOM = $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-      echo "Random text: $RANDOM" > random.txt
-  - name: Commit and push changes
-    uses: arcezd/github-app-commit-action@v1
-    env:
-      GH_APP_PRIVATE_KEY: ${{ secrets.GH_APP_PRIVATE_KEY }}
-    with:
-      repository: ${{ github.repository }}
-      branch: "test-push"
-      force-push: true
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Write random text to file
+      run: |
+        RANDOM = $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+        echo "Random text: $RANDOM" > random.txt
+    - name: Commit and push changes
+      uses: arcezd/github-app-commit-action@v1
+      env:
+        GH_APP_PRIVATE_KEY: ${{ secrets.GH_APP_PRIVATE_KEY }}
+      with:
+        repository: ${{ github.repository }}
+        branch: "test-push"
+        force-push: true
