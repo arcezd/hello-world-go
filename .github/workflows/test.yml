@@ -3,6 +3,11 @@ name: Test GH action commit and push
 # Configure Manual Trigger
 on:
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to push changes'
+        required: true
+        default: 'test-push'
 
 jobs:
   build:
@@ -10,15 +15,16 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Write random text to file
+      with:
+        ref: ${{ github.event.inputs.branch }}
+    - name: Write uuid to file
       run: |
-        RANDOM = $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-        echo "Random text: $RANDOM" > random.txt
+        UUID=$(cat /proc/sys/kernel/random/uuid)
+        echo "uuid: $UUID" > random.txt
     - name: Commit and push changes
       uses: arcezd/github-app-commit-action@v1
-      env:
-        GH_APP_PRIVATE_KEY: ${{ secrets.GH_APP_PRIVATE_KEY }}
       with:
+        github-app-private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
         repository: ${{ github.repository }}
-        branch: "test-push"
+        branch: ${{ github.event.inputs.branch }}
         force-push: true
